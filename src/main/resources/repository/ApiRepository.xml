@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.apiservice.repository.ApiRepository">
+
+    <insert id="insert">
+        insert into api(member_id , member_pw , member_name , member_phone , advert)
+        values (#{memberId} , #{memberPw} , #{memberName} , #{memberPhone} , #{advert})
+    </insert>
+
+
+    <update id="update">
+        update api
+        set update_date  = now()
+          <if test=" memberId != null and memberId != '' ">
+          , member_id    = #{memberId}
+          </if>
+          <if test="memberPw != null and memberPw != '' ">
+          , member_pw    = #{memberPw}
+          </if>
+          <if test="memberName != null and memberName != '' ">
+          , member_name  = #{memberName}
+          </if>
+          <if test="memberPhone != null and memberPhone != '' ">
+          , member_phone = #{memberPhone}
+          </if>
+          <if test="advert != null and advert != '' ">
+          , advert       = #{advert}
+          </if>
+        where member_number = #{memberNumber}
+    </update>
+
+    <delete id="delete">
+        delete
+        from api
+        where member_number = #{memberNumber}
+    </delete>
+
+    <select id="selectList" resultType="com.apiservice.model.ApiVO">
+        select member_number ,member_id , member_pw , member_name , member_phone , advert , update_date
+        from api
+        order by member_number desc
+        limit #{skip},#{size}
+    </select>
+
+    <select id="getTotal" resultType="int">
+        select count (member_number) from api
+    </select>
+
+    <select id="getCheck" resultType="com.apiservice.model.ApiVO">
+        select * from api
+        where member_number = #{memberNumber} OR member_id = #{memberId}
+    </select>
+
+</mapper>

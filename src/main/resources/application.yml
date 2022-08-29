@@ -1,0 +1,31 @@
+#1
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/api
+    username: api
+    password: api
+    driver-class-name: org.mariadb.jdbc.Driver
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+mybatis:
+  type-aliases-package: com.model
+  mapper-locations: classpath:repository/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+logging:
+  config: classpath:logback-local.xml
+
+
+
+
+
+
+
