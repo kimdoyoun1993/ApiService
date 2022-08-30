@@ -2,7 +2,9 @@ package com.apiservice.repository;
 
 import com.apiservice.model.ApiDTO;
 import com.apiservice.model.ApiVO;
+import com.apiservice.model.DeviceDTO;
 import com.apiservice.model.ListDTO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,7 +22,11 @@ public interface ApiRepository {
 
     int getTotal(ListDTO listDTO);
 
-    List<ApiVO> getCheck(ApiDTO apiDTO);
+    ApiVO getPk(ApiDTO apiDTO); // api 테이블 pk
 
+    ApiVO getId(ApiDTO apiDTO); // api 테이블 memberId
+
+
+    void updateDevicesCount(@Param("memberNumber") Integer memberNumber, @Param("amount") int amount);
 
 }

@@ -19,5 +19,7 @@ public class ApiVO {
     private LocalDateTime regDate;
     private LocalDateTime updateDate;
 
+    private int deviceCount; // device 등록
+
 
 }

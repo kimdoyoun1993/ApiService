@@ -5,14 +5,36 @@
 
 <mapper namespace="com.apiservice.repository.ApiRepository">
 
+    <sql id="search">
+        <where>
+            <if test="keyword != null">
+                <foreach collection="types" item="item" separator="OR" open="(" close=")">
+                    <if test = 'item == "i"'>
+                        member_id like concat('%',#{keyword} , '%')
+                    </if>
+                    <if test='item =="n"'>
+                        member_name like concat('%' , #{keyword} , '%')
+                    </if>
+                    <if test='item =="p"'>
+                        member_phone like concat('%' , #{keyword} , '%')
+                    </if>
+                    <if test='item =="a"'>
+                        advert like concat('%' , #{keyword} , '%')
+                    </if>
+                </foreach>
+            </if>
+        </where>
+
+    </sql>
+
     <insert id="insert">
-        insert into api(member_id , member_pw , member_name , member_phone , advert)
+        insert into api.api(member_id , member_pw , member_name , member_phone , advert)
         values (#{memberId} , #{memberPw} , #{memberName} , #{memberPhone} , #{advert})
     </insert>
 
 
     <update id="update">
-        update api
+        update api.api
         set update_date  = now()
           <if test=" memberId != null and memberId != '' ">
           , member_id    = #{memberId}
@@ -34,24 +56,36 @@
 
     <delete id="delete">
         delete
-        from api
+        from api.api
         where member_number = #{memberNumber}
     </delete>
 
     <select id="selectList" resultType="com.apiservice.model.ApiVO">
         select member_number ,member_id , member_pw , member_name , member_phone , advert , update_date
-        from api
+        from api.api
+        <include refid="search"></include>
         order by member_number desc
         limit #{skip},#{size}
     </select>
 
     <select id="getTotal" resultType="int">
-        select count (member_number) from api
+        select count (member_number) from api.api
+        <include refid="search"></include>
     </select>
 
-    <select id="getCheck" resultType="com.apiservice.model.ApiVO">
-        select * from api
-        where member_number = #{memberNumber} OR member_id = #{memberId}
+    <select id="getPk" resultType="com.apiservice.model.ApiVO">
+        select member_number from api.api
+        where member_number = #{memberNumber}
     </select>
+
+    <select id="getId" resultType="com.apiservice.model.ApiVO">
+        select member_id  from api.api
+        where member_id = #{memberId}
+    </select>
+
+    <update id="updateDevicesCount">
+        update api.api set deviceCount = deviceCount + #{amount} where member_number = #{memberNumber}
+    </update>
+
 
 </mapper>

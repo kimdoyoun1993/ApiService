@@ -33,15 +33,17 @@ public class ApiServiceImpl implements ApiService {
         String advert = apiDTO.getAdvert() == null ? "N" :apiDTO.getAdvert();
         apiDTO.setAdvert(advert);
 
-        //DB 조회 (중복 ID 가 있는지 검사)
-        List<ApiVO> getApiVO = apiRepository.getCheck(apiDTO);
 
-        if (getApiVO != null){
+        //DB 조회 (중복 ID 가 있는지 검사)
+        ApiVO getId = apiRepository.getId(apiDTO);
+
+        if (getId == null){
+        }else {
             log.info("ID 중복");
             throw new CustomException(ErrorCode.BAD_ARTICLE);
         }
 
-        apiRepository.insert(apiDTO);
+      apiRepository.insert(apiDTO);
 
     }
 
@@ -51,9 +53,10 @@ public class ApiServiceImpl implements ApiService {
         log.info(apiDTO);
 
         //DB 조회 (PK 가 있는지 검사)
-        List<ApiVO> getApiVO = apiRepository.getCheck(apiDTO);
+        ApiVO getPk = apiRepository.getPk(apiDTO);
 
-        if(getApiVO == null){
+        if(getPk == null){
+        }else {
             log.info("없는 PK 입니다");
             throw new CustomException(ErrorCode.NOT_INFO);
         }
