@@ -88,4 +88,7 @@
     </update>
 
 
+    <update id="deleteDevicesCount">
+        update api.api set deviceCount = deviceCount - 1 where member_number = #{memberNumber}
+    </update>
 </mapper>

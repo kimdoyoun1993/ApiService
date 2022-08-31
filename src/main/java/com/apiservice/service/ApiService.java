@@ -4,7 +4,6 @@ import com.apiservice.model.ApiDTO;
 import com.apiservice.model.ListDTO;
 import com.apiservice.model.ListResponseDTO;
 
-import java.util.List;
 
 public interface ApiService {
 

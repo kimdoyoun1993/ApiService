@@ -5,9 +5,56 @@
 
 <mapper namespace="com.apiservice.repository.DeviceRepository">
 
+
+    <sql id="search">
+        <where>
+            <if test="keyword != null">
+                <foreach collection="types" item="item" separator="OR" open="(" close=")">
+                    <if test = 'item == "n"'>
+                        device_name like concat('%',#{keyword} , '%')
+                    </if>
+                    <if test='item =="t"'>
+                        device_type like concat('%' , #{keyword} , '%')
+                    </if>
+                    <if test='item =="p"'>
+                        member_number like concat('%' , #{keyword} , '%')
+                    </if>
+                    <if test='item =="r"'>
+                        region like concat('%' , #{keyword} , '%')
+                    </if>
+                </foreach>
+            </if>
+        </where>
+
+    </sql>
+
     <insert id="deviceInsert">
         insert into api.device( device_name, device_type, installer, in_date, region, member_number)
         value(#{deviceName},#{deviceType},#{installer},now(),#{region},#{memberNumber})
     </insert>
 
+    <delete id="deviceDelete">
+        delete
+        from api.device
+        where service_number = #{serviceNumber}
+    </delete>
+
+
+    <select id="getPk" resultType="com.apiservice.model.DeviceVO">
+        select service_number , member_number  from api.device
+        where service_number = #{serviceNumber}
+    </select>
+
+    <select id="selectList" resultType="com.apiservice.model.DeviceVO">
+        select service_number, device_name, device_type, installer, in_date, region, member_number
+        from api.device
+        <include refid="search"></include>
+        order by service_number desc
+        limit #{skip},#{size}
+    </select>
+
+    <select id="getTotal" resultType="int">
+        select count (service_number) from api.device
+        <include refid="search"></include>
+    </select>
 </mapper>

@@ -2,7 +2,6 @@ package com.apiservice.repository;
 
 import com.apiservice.model.ApiDTO;
 import com.apiservice.model.ApiVO;
-import com.apiservice.model.DeviceDTO;
 import com.apiservice.model.ListDTO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -28,5 +27,9 @@ public interface ApiRepository {
 
 
     void updateDevicesCount(@Param("memberNumber") Integer memberNumber, @Param("amount") int amount);
+
+    void deleteDevicesCount(@Param("memberNumber") Integer memberNumber);
+
+
 
 }
